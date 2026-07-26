@@ -1,0 +1,17 @@
+{
+  "_schema_version": 1,
+  "_default_whatsapp": "212687155245",
+
+  "naimmarket1.com": {
+    "status": "active"
+  },
+
+  "naimmarket2.com": {
+    "status": "suspended",
+    "whatsapp": "212600000000"
+  },
+
+  "naimmarket21.com": {
+    "status": "active"
+  }
+}
