@@ -70,7 +70,10 @@
       .then(function (data) {
         if (!data || typeof data !== 'object') throw new Error('bad-payload');
 
-        var host  = location.hostname.replace(/^www\./, '');
+        var host =
+  location.hostname === "abdelhamidnaim.github.io"
+    ? location.pathname.split("/")[1]
+    : location.hostname.replace(/^www\./, "");
         var store = data[host];
 
         if (store) {
