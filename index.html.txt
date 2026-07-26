@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<script src="https://abdelhamidnaim.github.io/central/license.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Maison Lumière — Joaillerie de Luxe</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Poppins:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --white:#FFFFFF;
+    --ivory:#FFFDF8;
+    --beige:#F8F4EC;
+    --gold:#D4AF37;
+    --gold-soft:#E4C767;
+    --champagne:#F7E7CE;
+    --pink:#F8D7DA;
+    --ink:#2b2620;
+    --ink-soft:#6b6156;
+    --line: rgba(43,38,32,0.08);
+    --shadow: 0 20px 50px rgba(180,150,80,0.14);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    font-family:'Poppins', sans-serif;
+    font-weight:300;
+    color:var(--ink);
+    background:var(--ivory);
+    overflow-x:hidden;
+  }
+  h1,h2,h3,h4{
+    font-family:'Cormorant Garamond', serif;
+    font-weight:500;
+    letter-spacing:0.02em;
+  }
+  a{text-decoration:none;color:inherit;}
+  ul{list-style:none;}
+  img{max-width:100%;display:block;}
+  .container{max-width:1240px;margin:0 auto;padding:0 40px;}
+  .eyebrow{
+    font-size:12px;
+    letter-spacing:0.32em;
+    text-transform:uppercase;
+    color:var(--gold);
+    font-weight:500;
+    display:inline-block;
+    margin-bottom:14px;
+  }
+  .section-title{
+    font-size:clamp(30px,4vw,44px);
+    font-weight:400;
+    margin-bottom:8px;
+    position:relative;
+    display:inline-block;
+  }
+  .shimmer-line{
+    width:70px;height:2px;margin:18px auto 0;
+    background:linear-gradient(90deg, transparent, var(--gold), var(--gold-soft), var(--gold), transparent);
+    background-size:200% 100%;
+    animation:shimmer 3.2s linear infinite;
+  }
+  .shimmer-line.left{margin:18px 0 0;}
+  @keyframes shimmer{
+    0%{background-position:200% 0;}
+    100%{background-position:-200% 0;}
+  }
+  .section-head{text-align:center;margin-bottom:60px;}
+  .btn{
+    display:inline-flex;align-items:center;gap:10px;
+    padding:16px 38px;
+    background:var(--ink);
+    color:var(--white);
+    font-size:13px;
+    letter-spacing:0.18em;
+    text-transform:uppercase;
+    border:1px solid var(--ink);
+    cursor:pointer;
+    transition:all .4s ease;
+    font-family:'Poppins',sans-serif;
+    font-weight:400;
+  }
+  .btn:hover{background:transparent;color:var(--ink);}
+  .btn.gold{background:var(--gold);border-color:var(--gold);color:var(--white);}
+  .btn.gold:hover{background:transparent;color:var(--gold);}
+  .btn.outline{background:transparent;color:var(--ink);}
+  .btn.outline:hover{background:var(--ink);color:var(--white);}
+
+  /* NAVBAR */
+  header{
+    position:fixed;top:0;left:0;width:100%;
+    z-index:1000;
+    padding:26px 0;
+    transition:all .5s cubic-bezier(.4,0,.2,1);
+    background:transparent;
+  }
+  header.scrolled{
+    background:rgba(255,255,255,0.92);
+    backdrop-filter:blur(14px);
+    padding:16px 0;
+    box-shadow:0 4px 30px rgba(180,150,80,0.1);
+  }
+  .nav-inner{display:flex;align-items:center;justify-content:space-between;}
+  .logo{
+    font-family:'Cormorant Garamond',serif;
+    font-size:26px;letter-spacing:0.12em;
+    font-weight:600;
+    color:var(--ink);
+  }
+  .logo span{color:var(--gold);font-style:italic;}
+  .nav-links{display:flex;gap:40px;}
+  .nav-links a{
+    font-size:13px;letter-spacing:0.08em;
+    text-transform:uppercase;
+    position:relative;padding-bottom:4px;
+    color:var(--ink);
+  }
+  .nav-links a::after{
+    content:'';position:absolute;left:0;bottom:0;width:0;height:1px;
+    background:var(--gold);transition:width .35s ease;
+  }
+  .nav-links a:hover::after{width:100%;}
+  .nav-actions{display:flex;align-items:center;gap:22px;}
+  .icon-btn{
+    background:none;border:none;cursor:pointer;
+    font-size:18px;color:var(--ink);
+    transition:color .3s;
+  }
+  .icon-btn:hover{color:var(--gold);}
+  .burger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none;}
+  .burger span{width:24px;height:1.5px;background:var(--ink);transition:all .3s;}
+
+  .search-panel{
+    position:fixed;top:0;left:0;width:100%;height:100%;
+    background:rgba(255,253,248,0.98);
+    z-index:2000;display:flex;align-items:center;justify-content:center;
+    flex-direction:column;gap:26px;
+    opacity:0;pointer-events:none;transition:opacity .4s ease;
+  }
+  .search-panel.active{opacity:1;pointer-events:all;}
+  .search-panel input{
+    width:min(600px,80vw);
+    background:none;border:none;border-bottom:1px solid var(--ink);
+    font-family:'Cormorant Garamond',serif;font-size:32px;
+    text-align:center;padding:10px;color:var(--ink);
+  }
+  .search-panel input:focus{outline:none;}
+  .search-close{position:absolute;top:34px;right:44px;font-size:26px;background:none;border:none;cursor:pointer;color:var(--ink);}
+  .search-results{max-width:700px;width:90vw;max-height:40vh;overflow:auto;text-align:center;font-size:14px;color:var(--ink-soft);}
+  .search-results div{padding:10px 0;border-bottom:1px solid var(--line);cursor:pointer;}
+  .search-results div:hover{color:var(--gold);}
+
+  /* HERO */
+  .hero{
+    position:relative;min-height:100vh;
+    display:flex;align-items:center;
+    background:var(--beige);
+    overflow:hidden;
+  }
+  .hero-bg{
+    position:absolute;inset:0;
+    background-image:url('https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?q=80&w=1974&auto=format&fit=crop');
+    background-size:cover;background-position:center;
+    filter:saturate(1.05) brightness(1.03);
+  }
+  .hero-veil{
+    position:absolute;inset:0;
+    background:linear-gradient(90deg, rgba(255,253,248,0.94) 0%, rgba(255,253,248,0.72) 38%, rgba(255,253,248,0.18) 65%, rgba(255,253,248,0.05) 100%);
+  }
+  .sparkle{
+    position:absolute;border-radius:50%;
+    background:radial-gradient(circle, #fff 0%, var(--gold-soft) 60%, transparent 70%);
+    opacity:0;pointer-events:none;
+    animation:twinkle 4s ease-in-out infinite;
+  }
+  @keyframes twinkle{
+    0%,100%{opacity:0;transform:scale(0.4);}
+    50%{opacity:1;transform:scale(1);}
+  }
+  .hero-content{position:relative;z-index:2;max-width:620px;padding-left:40px;}
+  .hero-content h1{
+    font-size:clamp(42px,6vw,72px);
+    line-height:1.05;
+    font-weight:400;
+    margin-bottom:24px;
+  }
+  .hero-content h1 em{font-style:italic;color:var(--gold);font-weight:500;}
+  .hero-content p{
+    font-size:16px;color:var(--ink-soft);
+    max-width:440px;margin-bottom:38px;
+    line-height:1.8;font-weight:300;
+  }
+  .hero-scroll{
+    position:absolute;bottom:40px;left:50%;transform:translateX(-50%);
+    display:flex;flex-direction:column;align-items:center;gap:10px;
+    font-size:11px;letter-spacing:0.2em;color:var(--ink-soft);
+    text-transform:uppercase;z-index:2;
+  }
+  .hero-scroll::after{
+    content:'';width:1px;height:36px;background:var(--gold);
+    animation:scrolldown 1.8s ease-in-out infinite;
+  }
+  @keyframes scrolldown{
+    0%{transform:scaleY(0);transform-origin:top;}
+    50%{transform:scaleY(1);transform-origin:top;}
+    51%{transform-origin:bottom;}
+    100%{transform:scaleY(0);transform-origin:bottom;}
+  }
+
+  /* CATEGORIES */
+  .categories{padding:110px 0 90px;background:var(--ivory);}
+  .cat-grid{
+    display:grid;grid-template-columns:repeat(6,1fr);gap:20px;
+  }
+  .cat-card{
+    position:relative;aspect-ratio:3/4;border-radius:4px;overflow:hidden;
+    cursor:pointer;
+  }
+  .cat-card img{width:100%;height:100%;object-fit:cover;transition:transform .7s ease;}
+  .cat-card:hover img{transform:scale(1.08);}
+  .cat-overlay{
+    position:absolute;inset:0;
+    background:linear-gradient(to top, rgba(43,38,32,0.55), transparent 55%);
+    display:flex;align-items:flex-end;justify-content:center;padding-bottom:22px;
+  }
+  .cat-overlay span{
+    color:#fff;font-family:'Cormorant Garamond',serif;font-size:18px;letter-spacing:0.04em;
+  }
+
+  /* REVEAL */
+  .reveal{opacity:0;transform:translateY(36px);transition:opacity .9s ease, transform .9s ease;}
+  .reveal.zoom{transform:scale(0.94);}
+  .reveal.visible{opacity:1;transform:translateY(0) scale(1);}
+
+  /* PRODUCT GRID */
+  .products-section{padding:90px 0;}
+  .products-section.tinted{background:var(--beige);}
+  .toolbar{
+    display:flex;justify-content:space-between;align-items:center;
+    margin-bottom:44px;flex-wrap:wrap;gap:18px;
+  }
+  .filters{display:flex;gap:10px;flex-wrap:wrap;}
+  .filter-btn{
+    padding:9px 20px;border:1px solid var(--line);
+    background:var(--white);font-size:12px;letter-spacing:0.05em;
+    text-transform:uppercase;cursor:pointer;border-radius:30px;
+    transition:all .3s;
+  }
+  .filter-btn.active, .filter-btn:hover{
+    background:var(--ink);color:var(--white);border-color:var(--ink);
+  }
+  select#sortSelect{
+    padding:10px 18px;border:1px solid var(--line);background:var(--white);
+    font-family:'Poppins',sans-serif;font-size:12px;letter-spacing:0.05em;
+    text-transform:uppercase;border-radius:30px;cursor:pointer;
+  }
+  .grid{
+    display:grid;grid-template-columns:repeat(4,1fr);gap:30px;
+  }
+  .product-card{
+    background:var(--white);
+    border-radius:6px;
+    overflow:hidden;
+    box-shadow:0 10px 30px rgba(150,120,60,0.08);
+    transition:transform .5s ease, box-shadow .5s ease;
+    position:relative;
+  }
+  .product-card:hover{
+    transform:translateY(-8px);
+    box-shadow:var(--shadow);
+  }
+  .product-img{position:relative;aspect-ratio:1/1;overflow:hidden;background:var(--champagne);}
+  .product-img img{width:100%;height:100%;object-fit:cover;transition:transform .8s ease;}
+  .product-card:hover .product-img img{transform:scale(1.1);}
+  .badge{
+    position:absolute;top:14px;left:14px;
+    background:var(--gold);color:#fff;font-size:10px;
+    letter-spacing:0.1em;text-transform:uppercase;
+    padding:6px 12px;border-radius:20px;
+  }
+  .badge.pink{background:var(--pink);color:var(--ink);}
+  .quick-add{
+    position:absolute;bottom:-60px;left:0;width:100%;
+    background:rgba(43,38,32,0.9);color:#fff;text-align:center;
+    padding:13px;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;
+    transition:bottom .4s ease;cursor:pointer;
+  }
+  .product-card:hover .quick-add{bottom:0;}
+  .product-info{padding:22px 20px 26px;text-align:center;}
+  .product-info .cat{font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--gold);margin-bottom:6px;}
+  .product-info h3{font-size:20px;font-weight:400;margin-bottom:8px;}
+  .price{font-size:15px;color:var(--ink-soft);font-family:'Poppins',sans-serif;}
+
+  /* EXCLUSIVE COLLECTIONS */
+  .exclusive{padding:100px 0;background:var(--ink);color:var(--white);}
+  .exclusive .section-head .eyebrow{color:var(--gold-soft);}
+  .exclusive .section-title{color:var(--white);}
+  .exclusive-grid{display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:24px;grid-template-rows:1fr 1fr;height:560px;}
+  .ex-card{position:relative;border-radius:6px;overflow:hidden;cursor:pointer;}
+  .ex-card:first-child{grid-row:1/3;}
+  .ex-card img{width:100%;height:100%;object-fit:cover;transition:transform .8s ease;}
+  .ex-card:hover img{transform:scale(1.06);}
+  .ex-label{
+    position:absolute;bottom:0;left:0;width:100%;padding:30px;
+    background:linear-gradient(to top, rgba(0,0,0,0.6), transparent);
+  }
+  .ex-label .eyebrow{color:var(--gold-soft);margin-bottom:6px;}
+  .ex-label h3{font-size:26px;font-weight:400;color:#fff;}
+
+  /* TESTIMONIALS */
+  .testimonials{padding:110px 0;text-align:center;background:var(--champagne);}
+  .test-track{display:flex;gap:30px;overflow-x:auto;scroll-snap-type:x mandatory;padding:10px;}
+  .test-card{
+    scroll-snap-align:center;
+    min-width:340px;background:var(--white);padding:40px 34px;border-radius:6px;
+    box-shadow:0 10px 30px rgba(150,120,60,0.1);
+  }
+  .stars{color:var(--gold);letter-spacing:4px;margin-bottom:18px;font-size:14px;}
+  .test-card p{font-style:italic;color:var(--ink-soft);line-height:1.8;margin-bottom:22px;font-family:'Cormorant Garamond',serif;font-size:19px;}
+  .test-name{font-size:13px;letter-spacing:0.08em;text-transform:uppercase;font-weight:500;}
+
+  /* INSTAGRAM */
+  .instagram{padding:100px 0;text-align:center;}
+  .insta-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:6px;margin-top:50px;}
+  .insta-grid a{position:relative;aspect-ratio:1/1;overflow:hidden;display:block;}
+  .insta-grid img{width:100%;height:100%;object-fit:cover;transition:transform .6s ease;}
+  .insta-grid a:hover img{transform:scale(1.15);}
+  .insta-grid a::after{
+    content:'♥';position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+    background:rgba(212,175,55,0.0);color:#fff;font-size:22px;opacity:0;transition:all .4s;
+  }
+  .insta-grid a:hover::after{background:rgba(212,175,55,0.55);opacity:1;}
+
+  /* NEWSLETTER */
+  .newsletter{
+    padding:100px 0;text-align:center;
+    background:linear-gradient(135deg, var(--pink) 0%, var(--champagne) 100%);
+  }
+  .newsletter-box{max-width:560px;margin:0 auto;}
+  .newsletter h2{font-size:36px;margin-bottom:16px;}
+  .newsletter p{color:var(--ink-soft);margin-bottom:34px;line-height:1.7;}
+  .news-form{display:flex;gap:0;border-bottom:1px solid var(--ink);max-width:440px;margin:0 auto;padding-bottom:6px;}
+  .news-form input{
+    flex:1;background:none;border:none;padding:12px 6px;
+    font-family:'Poppins',sans-serif;font-size:14px;color:var(--ink);
+  }
+  .news-form input:focus{outline:none;}
+  .news-form button{background:none;border:none;font-size:13px;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;color:var(--ink);font-weight:500;}
+  .news-form button:hover{color:var(--gold);}
+  .news-msg{margin-top:16px;font-size:13px;color:var(--gold);min-height:18px;}
+
+  /* FOOTER */
+  footer{background:var(--ink);color:#e8e2d8;padding:90px 0 30px;}
+  .footer-grid{display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:50px;margin-bottom:60px;}
+  .footer-grid h4{color:#fff;font-size:14px;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:22px;font-family:'Poppins',sans-serif;font-weight:500;}
+  .footer-grid p{font-size:14px;line-height:1.9;color:#c9c0b2;font-weight:300;}
+  .footer-grid ul li{margin-bottom:12px;}
+  .footer-grid ul li a{font-size:14px;color:#c9c0b2;transition:color .3s;}
+  .footer-grid ul li a:hover{color:var(--gold-soft);}
+  .footer-logo{font-family:'Cormorant Garamond',serif;font-size:28px;color:#fff;margin-bottom:18px;}
+  .footer-logo span{color:var(--gold);font-style:italic;}
+  .footer-social{display:flex;gap:16px;margin-top:22px;}
+  .footer-social a{width:38px;height:38px;border:1px solid #4a453d;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;transition:all .3s;}
+  .footer-social a:hover{background:var(--gold);border-color:var(--gold);}
+  .footer-bottom{
+    border-top:1px solid #3d3830;padding-top:30px;
+    display:flex;justify-content:space-between;align-items:center;
+    font-size:12px;color:#8a8375;flex-wrap:wrap;gap:12px;
+  }
+
+  /* BACK TO TOP */
+  .to-top{
+    position:fixed;bottom:32px;right:32px;
+    width:48px;height:48px;border-radius:50%;
+    background:var(--gold);color:#fff;border:none;
+    display:flex;align-items:center;justify-content:center;
+    font-size:18px;cursor:pointer;z-index:900;
+    opacity:0;pointer-events:none;transform:translateY(20px);
+    transition:all .4s ease;box-shadow:0 8px 24px rgba(212,175,55,0.4);
+  }
+  .to-top.show{opacity:1;pointer-events:all;transform:translateY(0);}
+  .to-top:hover{background:var(--ink);}
+
+  /* MOBILE MENU */
+  .mobile-menu{
+    position:fixed;top:0;right:-100%;width:78%;max-width:340px;height:100%;
+    background:var(--ivory);z-index:1500;padding:100px 40px;
+    transition:right .5s cubic-bezier(.4,0,.2,1);
+    box-shadow:-10px 0 40px rgba(0,0,0,0.1);
+  }
+  .mobile-menu.open{right:0;}
+  .mobile-menu ul li{margin-bottom:28px;}
+  .mobile-menu ul li a{font-family:'Cormorant Garamond',serif;font-size:24px;}
+  .mobile-overlay{
+    position:fixed;inset:0;background:rgba(43,38,32,0.4);z-index:1400;
+    opacity:0;pointer-events:none;transition:opacity .4s;
+  }
+  .mobile-overlay.active{opacity:1;pointer-events:all;}
+
+  @media(max-width:1024px){
+    .cat-grid{grid-template-columns:repeat(3,1fr);}
+    .grid{grid-template-columns:repeat(2,1fr);}
+    .exclusive-grid{grid-template-columns:1fr 1fr;height:auto;}
+    .ex-card{height:280px;}
+    .ex-card:first-child{grid-row:auto;grid-column:1/3;height:320px;}
+    .footer-grid{grid-template-columns:1fr 1fr;}
+    .insta-grid{grid-template-columns:repeat(3,1fr);}
+  }
+  @media(max-width:768px){
+    .nav-links{display:none;}
+    .burger{display:flex;}
+    .container{padding:0 24px;}
+    .cat-grid{grid-template-columns:repeat(2,1fr);}
+    .grid{grid-template-columns:1fr 1fr;gap:16px;}
+    .hero-content{padding-left:24px;}
+    .exclusive-grid{grid-template-columns:1fr;}
+    .ex-card:first-child{grid-column:1;}
+    .toolbar{flex-direction:column;align-items:flex-start;}
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header id="header">
+  <div class="container nav-inner">
+    <a href="#accueil" class="logo">Maison<span> Lumière</span></a>
+    <nav class="nav-links">
+      <a href="#categories">Bagues</a>
+      <a href="#categories">Colliers</a>
+      <a href="#nouveautes">Nouveautés</a>
+      <a href="#ventes">Best-sellers</a>
+      <a href="#exclusif">Collections</a>
+      <a href="#temoignages">Avis</a>
+    </nav>
+    <div class="nav-actions">
+      <button class="icon-btn" id="searchOpen" aria-label="Rechercher">⚲</button>
+      <button class="icon-btn" aria-label="Panier">♡</button>
+      <button class="icon-btn" aria-label="Sac">🛍</button>
+      <button class="burger" id="burgerBtn" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</header>
+
+<div class="mobile-overlay" id="mobileOverlay"></div>
+<div class="mobile-menu" id="mobileMenu">
+  <ul>
+    <li><a href="#categories">Bagues</a></li>
+    <li><a href="#categories">Colliers</a></li>
+    <li><a href="#nouveautes">Nouveautés</a></li>
+    <li><a href="#ventes">Best-sellers</a></li>
+    <li><a href="#exclusif">Collections</a></li>
+    <li><a href="#temoignages">Avis clients</a></li>
+  </ul>
+</div>
+
+<div class="search-panel" id="searchPanel">
+  <button class="search-close" id="searchClose">✕</button>
+  <input type="text" id="searchInput" placeholder="Rechercher une pièce..." autocomplete="off">
+  <div class="search-results" id="searchResults"></div>
+</div>
+
+<!-- HERO -->
+<section class="hero" id="accueil">
+  <div class="hero-bg"></div>
+  <div class="hero-veil"></div>
+  <div class="hero-content">
+    <span class="eyebrow">Collection Printemps — Éclat Naturel</span>
+    <h1>La lumière, <em>sublimée</em> en bijou.</h1>
+    <p>Des pièces façonnées à la main dans l'or et les pierres les plus pures, pensées pour révéler votre éclat naturel, jour après jour.</p>
+    <a href="#nouveautes" class="btn gold">Découvrir la collection</a>
+  </div>
+</section>
+
+<!-- CATEGORIES -->
+<section class="categories" id="categories">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">Nos univers</span>
+      <h2 class="section-title">Façonnées pour chaque instant</h2>
+      <div class="shimmer-line" style="margin:18px auto 0;"></div>
+    </div>
+    <div class="cat-grid">
+      <div class="cat-card reveal" data-filter="Bagues">
+        <img src="https://images.unsplash.com/photo-1605100804763-247f67b3557e?q=80&w=800&auto=format&fit=crop" alt="Bagues">
+        <div class="cat-overlay"><span>Bagues</span></div>
+      </div>
+      <div class="cat-card reveal" data-filter="Colliers">
+        <img src="https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?q=80&w=800&auto=format&fit=crop" alt="Colliers">
+        <div class="cat-overlay"><span>Colliers</span></div>
+      </div>
+      <div class="cat-card reveal" data-filter="Bracelets">
+        <img src="https://images.unsplash.com/photo-1611652022419-a9419f74343d?q=80&w=800&auto=format&fit=crop" alt="Bracelets">
+        <div class="cat-overlay"><span>Bracelets</span></div>
+      </div>
+      <div class="cat-card reveal" data-filter="Boucles">
+        <img src="https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?q=80&w=800&auto=format&fit=crop" alt="Boucles d'oreilles">
+        <div class="cat-overlay"><span>Boucles d'oreilles</span></div>
+      </div>
+      <div class="cat-card reveal" data-filter="Montres">
+        <img src="https://images.unsplash.com/photo-1524592094714-0f0654e20314?q=80&w=800&auto=format&fit=crop" alt="Montres">
+        <div class="cat-overlay"><span>Montres</span></div>
+      </div>
+      <div class="cat-card reveal" data-filter="Collections">
+        <img src="https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?q=80&w=800&auto=format&fit=crop" alt="Collections">
+        <div class="cat-overlay"><span>Collections</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- NOUVEAUTES -->
+<section class="products-section" id="nouveautes">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">Fraîchement arrivées</span>
+      <h2 class="section-title">Nouveautés</h2>
+      <div class="shimmer-line" style="margin:18px auto 0;"></div>
+    </div>
+    <div class="toolbar">
+      <div class="filters" id="filterBar">
+        <button class="filter-btn active" data-cat="all">Tout</button>
+        <button class="filter-btn" data-cat="Bagues">Bagues</button>
+        <button class="filter-btn" data-cat="Colliers">Colliers</button>
+        <button class="filter-btn" data-cat="Bracelets">Bracelets</button>
+        <button class="filter-btn" data-cat="Boucles">Boucles d'oreilles</button>
+        <button class="filter-btn" data-cat="Montres">Montres</button>
+      </div>
+      <select id="sortSelect">
+        <option value="default">Trier par</option>
+        <option value="asc">Prix croissant</option>
+        <option value="desc">Prix décroissant</option>
+      </select>
+    </div>
+    <div class="grid" id="productGrid"></div>
+  </div>
+</section>
+
+<!-- MEILLEURES VENTES -->
+<section class="products-section tinted" id="ventes">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">Les préférées</span>
+      <h2 class="section-title">Meilleures ventes</h2>
+      <div class="shimmer-line" style="margin:18px auto 0;"></div>
+    </div>
+    <div class="grid" id="bestsellerGrid"></div>
+  </div>
+</section>
+
+<!-- COLLECTIONS EXCLUSIVES -->
+<section class="exclusive" id="exclusif">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">Édition limitée</span>
+      <h2 class="section-title">Collections exclusives</h2>
+      <div class="shimmer-line" style="margin:18px auto 0;"></div>
+    </div>
+    <div class="exclusive-grid">
+      <div class="ex-card reveal zoom">
+        <img src="https://images.unsplash.com/photo-1611591437281-460bfbe1220a?q=80&w=1200&auto=format&fit=crop" alt="Collection Aurore">
+        <div class="ex-label"><span class="eyebrow">Collection</span><h3>Aurore Dorée</h3></div>
+      </div>
+      <div class="ex-card reveal zoom">
+        <img src="https://images.unsplash.com/photo-1573408301185-9146fe634ad0?q=80&w=800&auto=format&fit=crop" alt="Collection Perle">
+        <div class="ex-label"><span class="eyebrow">Collection</span><h3>Perle Rare</h3></div>
+      </div>
+      <div class="ex-card reveal zoom">
+        <img src="https://images.unsplash.com/photo-1518544866330-4c73d4c5e6e2?q=80&w=800&auto=format&fit=crop" alt="Collection Rosée">
+        <div class="ex-label"><span class="eyebrow">Collection</span><h3>Rosée Poudrée</h3></div>
+      </div>
+      <div class="ex-card reveal zoom">
+        <img src="https://images.unsplash.com/photo-1608042314453-ae338d80c427?q=80&w=800&auto=format&fit=crop" alt="Collection Éclat">
+        <div class="ex-label"><span class="eyebrow">Collection</span><h3>Éclat Céleste</h3></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials" id="temoignages">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">Ce qu'elles en disent</span>
+      <h2 class="section-title">Témoignages clients</h2>
+      <div class="shimmer-line" style="margin:18px auto 0;"></div>
+    </div>
+    <div class="test-track">
+      <div class="test-card reveal">
+        <div class="stars">★★★★★</div>
+        <p>« La bague que j'ai commandée est encore plus belle en vrai. Un écrin, un service, une élégance rares. »</p>
+        <div class="test-name">— Camille R.</div>
+      </div>
+      <div class="test-card reveal">
+        <div class="stars">★★★★★</div>
+        <p>« Mon collier Aurore Dorée reçoit des compliments à chaque sortie. La finition est impeccable. »</p>
+        <div class="test-name">— Léa M.</div>
+      </div>
+      <div class="test-card reveal">
+        <div class="stars">★★★★★</div>
+        <p>« Livraison rapide, emballage somptueux, et un bijou qui dépasse toutes mes attentes. »</p>
+        <div class="test-name">— Sofia B.</div>
+      </div>
+      <div class="test-card reveal">
+        <div class="stars">★★★★★</div>
+        <p>« Une maison qui comprend vraiment le sens du détail et de la lumière. Mon coffret préféré. »</p>
+        <div class="test-name">— Nour K.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- INSTAGRAM -->
+<section class="instagram">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">@maisonlumiere</span>
+      <h2 class="section-title">Suivez-nous</h2>
+      <div class="shimmer-line" style="margin:18px auto 0;"></div>
+    </div>
+    <div class="insta-grid">
+      <a href="#"><img src="https://images.unsplash.com/photo-1600721391689-2564bb8055de?q=80&w=400&auto=format&fit=crop"></a>
+      <a href="#"><img src="https://images.unsplash.com/photo-1587467512961-120760940315?q=80&w=400&auto=format&fit=crop"></a>
+      <a href="#"><img src="https://images.unsplash.com/photo-1617038260897-41a1f14a8ca0?q=80&w=400&auto=format&fit=crop"></a>
+      <a href="#"><img src="https://images.unsplash.com/photo-1585123334904-845d60e97b29?q=80&w=400&auto=format&fit=crop"></a>
+      <a href="#"><img src="https://images.unsplash.com/photo-1589128777073-263566ae5e4d?q=80&w=400&auto=format&fit=crop"></a>
+      <a href="#"><img src="https://images.unsplash.com/photo-1520962880247-cfaf541c8724?q=80&w=400&auto=format&fit=crop"></a>
+    </div>
+  </div>
+</section>
+
+<!-- NEWSLETTER -->
+<section class="newsletter">
+  <div class="container newsletter-box">
+    <span class="eyebrow">Restons en contact</span>
+    <h2>Recevez nos exclusivités</h2>
+    <p>Inscrivez-vous et recevez 10% de réduction sur votre première commande, ainsi que nos nouveautés en avant-première.</p>
+    <form class="news-form" id="newsForm">
+      <input type="email" placeholder="Votre adresse e-mail" id="newsEmail" required>
+      <button type="submit">S'inscrire →</button>
+    </form>
+    <div class="news-msg" id="newsMsg"></div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-logo">Maison<span> Lumière</span></div>
+        <p>Joaillerie parisienne façonnée à la main depuis 1998. Chaque pièce raconte une lumière qui vous est propre.</p>
+        <div class="footer-social">
+          <a href="#">IG</a>
+          <a href="#">FB</a>
+          <a href="#">PT</a>
+        </div>
+      </div>
+      <div>
+        <h4>Boutique</h4>
+        <ul>
+          <li><a href="#">Bagues</a></li>
+          <li><a href="#">Colliers</a></li>
+          <li><a href="#">Bracelets</a></li>
+          <li><a href="#">Montres</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Maison</h4>
+        <ul>
+          <li><a href="#">Notre histoire</a></li>
+          <li><a href="#">Savoir-faire</a></li>
+          <li><a href="#">Boutiques</a></li>
+          <li><a href="#">Presse</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Service client</h4>
+        <ul>
+          <li><a href="#">Livraison</a></li>
+          <li><a href="#">Retours</a></li>
+          <li><a href="#">Guide des tailles</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Maison Lumière. Tous droits réservés.</span>
+      <span>Mentions légales · Confidentialité · CGV</span>
+    </div>
+  </div>
+</footer>
+
+<button class="to-top" id="toTop" aria-label="Retour en haut">↑</button>
+
+<script>
+// ---------- PRODUCT DATA ----------
+const products = [
+  {id:1, name:"Bague Solitaire Aurore", cat:"Bagues", price:1290, img:"https://images.unsplash.com/photo-1605100804763-247f67b3557e?q=80&w=600&auto=format&fit=crop", badge:"new"},
+  {id:2, name:"Collier Fil de Lumière", cat:"Colliers", price:890, img:"https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?q=80&w=600&auto=format&fit=crop", badge:"new"},
+  {id:3, name:"Bracelet Jonc Doré", cat:"Bracelets", price:640, img:"https://images.unsplash.com/photo-1611652022419-a9419f74343d?q=80&w=600&auto=format&fit=crop", badge:null},
+  {id:4, name:"Boucles Goutte de Rosée", cat:"Boucles", price:520, img:"https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?q=80&w=600&auto=format&fit=crop", badge:"new"},
+  {id:5, name:"Montre Élégance Or", cat:"Montres", price:2450, img:"https://images.unsplash.com/photo-1524592094714-0f0654e20314?q=80&w=600&auto=format&fit=crop", badge:null},
+  {id:6, name:"Bague Duo Perle", cat:"Bagues", price:980, img:"https://images.unsplash.com/photo-1573408301185-9146fe634ad0?q=80&w=600&auto=format&fit=crop", badge:"bestseller"},
+  {id:7, name:"Collier Étoile Filante", cat:"Colliers", price:1120, img:"https://images.unsplash.com/photo-1611591437281-460bfbe1220a?q=80&w=600&auto=format&fit=crop", badge:"bestseller"},
+  {id:8, name:"Bracelet Chaîne Fine", cat:"Bracelets", price:410, img:"https://images.unsplash.com/photo-1518544866330-4c73d4c5e6e2?q=80&w=600&auto=format&fit=crop", badge:null},
+];
+
+const bestsellers = [
+  {id:9, name:"Bague Éternité Champagne", cat:"Bagues", price:1540, img:"https://images.unsplash.com/photo-1608042314453-ae338d80c427?q=80&w=600&auto=format&fit=crop", badge:"bestseller"},
+  {id:10, name:"Collier Cœur Poudré", cat:"Colliers", price:760, img:"https://images.unsplash.com/photo-1587467512961-120760940315?q=80&w=600&auto=format&fit=crop", badge:"bestseller"},
+  {id:11, name:"Boucles Lune d'Or", cat:"Boucles", price:495, img:"https://images.unsplash.com/photo-1617038260897-41a1f14a8ca0?q=80&w=600&auto=format&fit=crop", badge:"bestseller"},
+  {id:12, name:"Montre Ivoire Classique", cat:"Montres", price:2100, img:"https://images.unsplash.com/photo-1589128777073-263566ae5e4d?q=80&w=600&auto=format&fit=crop", badge:"bestseller"},
+];
+
+function badgeLabel(b){
+  if(b === "new") return '<span class="badge">Nouveau</span>';
+  if(b === "bestseller") return '<span class="badge pink">Best-seller</span>';
+  return '';
+}
+
+function renderProducts(list, targetId){
+  const grid = document.getElementById(targetId);
+  grid.innerHTML = list.map(p => `
+    <div class="product-card reveal zoom">
+      <div class="product-img">
+        ${badgeLabel(p.badge)}
+        <img src="${p.img}" alt="${p.name}">
+        <div class="quick-add">Ajouter à ma sélection</div>
+      </div>
+      <div class="product-info">
+        <div class="cat">${p.cat}</div>
+        <h3>${p.name}</h3>
+        <div class="price">${p.price.toLocaleString('fr-FR')} €</div>
+      </div>
+    </div>
+  `).join('');
+  observeReveals();
+}
+
+renderProducts(products, 'productGrid');
+renderProducts(bestsellers, 'bestsellerGrid');
+
+// ---------- FILTER + SORT ----------
+let currentCat = 'all';
+let currentSort = 'default';
+
+function applyFilters(){
+  let list = currentCat === 'all' ? [...products] : products.filter(p => p.cat === currentCat);
+  if(currentSort === 'asc') list.sort((a,b)=>a.price-b.price);
+  if(currentSort === 'desc') list.sort((a,b)=>b.price-a.price);
+  renderProducts(list, 'productGrid');
+}
+
+document.querySelectorAll('.filter-btn').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    currentCat = btn.dataset.cat;
+    applyFilters();
+  });
+});
+
+document.getElementById('sortSelect').addEventListener('change', (e)=>{
+  currentSort = e.target.value;
+  applyFilters();
+});
+
+document.querySelectorAll('.cat-card').forEach(card=>{
+  card.addEventListener('click', ()=>{
+    const filter = card.dataset.filter;
+    document.getElementById('nouveautes').scrollIntoView({behavior:'smooth'});
+    const btn = document.querySelector(`.filter-btn[data-cat="${filter}"]`);
+    if(btn){
+      document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      currentCat = filter;
+      applyFilters();
+    }
+  });
+});
+
+// ---------- NAVBAR SCROLL ----------
+const header = document.getElementById('header');
+window.addEventListener('scroll', ()=>{
+  if(window.scrollY > 60) header.classList.add('scrolled');
+  else header.classList.remove('scrolled');
+
+  const toTop = document.getElementById('toTop');
+  if(window.scrollY > 700) toTop.classList.add('show');
+  else toTop.classList.remove('show');
+});
+
+document.getElementById('toTop').addEventListener('click', ()=>{
+  window.scrollTo({top:0, behavior:'smooth'});
+});
+
+// ---------- MOBILE MENU ----------
+const burger = document.getElementById('burgerBtn');
+const mobileMenu = document.getElementById('mobileMenu');
+const mobileOverlay = document.getElementById('mobileOverlay');
+function toggleMenu(){
+  mobileMenu.classList.toggle('open');
+  mobileOverlay.classList.toggle('active');
+}
+burger.addEventListener('click', toggleMenu);
+mobileOverlay.addEventListener('click', toggleMenu);
+document.querySelectorAll('.mobile-menu a').forEach(a=>a.addEventListener('click', toggleMenu));
+
+// ---------- SEARCH ----------
+const searchPanel = document.getElementById('searchPanel');
+const searchInput = document.getElementById('searchInput');
+const searchResults = document.getElementById('searchResults');
+document.getElementById('searchOpen').addEventListener('click', ()=>{
+  searchPanel.classList.add('active');
+  setTimeout(()=>searchInput.focus(), 300);
+});
+document.getElementById('searchClose').addEventListener('click', ()=>{
+  searchPanel.classList.remove('active');
+  searchInput.value='';
+  searchResults.innerHTML='';
+});
+searchInput.addEventListener('input', (e)=>{
+  const q = e.target.value.trim().toLowerCase();
+  if(!q){ searchResults.innerHTML=''; return; }
+  const all = [...products, ...bestsellers];
+  const matches = all.filter(p => p.name.toLowerCase().includes(q) || p.cat.toLowerCase().includes(q));
+  searchResults.innerHTML = matches.length
+    ? matches.map(p=>`<div>${p.name} — <em>${p.cat}</em> · ${p.price.toLocaleString('fr-FR')} €</div>`).join('')
+    : '<div>Aucun résultat trouvé.</div>';
+});
+
+// ---------- NEWSLETTER ----------
+document.getElementById('newsForm').addEventListener('submit', (e)=>{
+  e.preventDefault();
+  document.getElementById('newsMsg').textContent = "Merci ! Vérifiez votre boîte mail pour votre code de bienvenue.";
+  document.getElementById('newsEmail').value = '';
+});
+
+// ---------- SCROLL REVEAL ----------
+function observeReveals(){
+  const els = document.querySelectorAll('.reveal:not(.visible)');
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(entry=>{
+      if(entry.isIntersecting){
+        entry.target.classList.add('visible');
+        io.unobserve(entry.target);
+      }
+    });
+  }, {threshold:0.15});
+  els.forEach(el=>io.observe(el));
+}
+observeReveals();
+
+// ---------- HERO SPARKLES ----------
+const hero = document.querySelector('.hero');
+for(let i=0;i<18;i++){
+  const s = document.createElement('div');
+  s.className = 'sparkle';
+  const size = Math.random()*4+2;
+  s.style.width = size+'px';
+  s.style.height = size+'px';
+  s.style.left = Math.random()*100+'%';
+  s.style.top = Math.random()*100+'%';
+  s.style.animationDelay = (Math.random()*4)+'s';
+  s.style.animationDuration = (3+Math.random()*3)+'s';
+  hero.appendChild(s);
+}
+</script>
+</body>
+</html>

@@ -1,102 +1,71 @@
 /* ═══════════════════════════════════════════════
-   🔧 Space Naim — ملف الفحص المركزي (license.js) — v4.1
+   🔧 Space Naim — ملف الفحص المركزي (license.js) — v4
    هذا الملف لا يُنسخ إلى أي موقع إطلاقاً.
    يعيش في مكان واحد فقط: المستودع المركزي على GitHub Pages.
+   كل المواقع تستدعيه مباشرة عبر رابط واحد، بدون أي نسخ محلية.
    ═══════════════════════════════════════════════ */
 (function () {
-  var LICENSE_VERSION = "4.1.0";
-  window.__spaceNaimLicenseVersion = LICENSE_VERSION; // للتحقق السريع من نسخة أي موقع عبر console
-
   // ⬇️ رابط GitHub Pages للمستودع المركزي (عدّله هنا فقط إن غيّرت المستودع)
   var BASE_URL = "https://abdelhamidnaim.github.io/central";
 
-  var CONFIG_URL       = BASE_URL + "/stores.json";
-  var SUSPENDED_PAGE   = BASE_URL + "/suspended.html";
+  var CONFIG_URL      = BASE_URL + "/stores.json";
+  var SUSPENDED_PAGE  = BASE_URL + "/suspended.html";
   var DEFAULT_WHATSAPP = "212687155245";
+  var MAX_WAIT_MS = 3000; // أقصى مدة انتظار قبل إظهار الموقع تلقائياً (شبكة أمان)
 
-  // هل يعمل الدومين غير المسجَّل بعد في stores.json بشكل طبيعي (true)،
-  // أم يُعتبر موقوفاً حتى يُضاف صراحةً بحالة active (false)؟
-  var ALLOW_UNLISTED_DOMAINS = true;
+  // ─────────────────────────────────────────────
+  // تحديد "مفتاح" الموقع الذي يُبحث عنه في stores.json
+  // - إن كان الموقع على دومين خاص (naimmarket1.com) => المفتاح هو الدومين نفسه.
+  // - إن كان الموقع لا يزال على رابط GitHub Pages مباشرة
+  //   (مثل abdelhamidnaim.github.io/maison-lumiere/) => كل مواقعك تشترك
+  //   بنفس الـ hostname (abdelhamidnaim.github.io)، فلا يكفي الدومين للتمييز.
+  //   في هذه الحالة نستخدم اسم المستودع (أول جزء من المسار) كمفتاح بدلاً منه،
+  //   مثل "maison-lumiere" أو "naim-site1".
+  // ─────────────────────────────────────────────
+  function resolveStoreKey() {
+    var host = location.hostname.replace(/^www\./, '');
 
-  // إعادة محاولة الفحص عند فشل الشبكة قبل اعتبار الأمر فشلاً نهائياً (Fail Closed)
-  var MAX_ATTEMPTS   = 3;
-  var RETRY_DELAY_MS = 1200;
+    if (/\.github\.io$/i.test(host)) {
+      var segments = location.pathname.split('/').filter(Boolean);
+      if (segments.length > 0) {
+        return segments[0]; // اسم المستودع، مثل "maison-lumiere"
+      }
+    }
+    return host; // دومين خاص، أو صفحة GitHub Pages جذرية بدون مسار فرعي
+  }
 
-  // إخفاء الصفحة فوراً (قبل أي رسم/Paint) — لا تُكشف إلا بعد تأكيد أن الموقع نشط
+  // 1) إخفاء الصفحة فوراً (قبل أي رسم/Paint) لمنع ظهور المتجر ولو للحظة قبل التحويل
   document.documentElement.style.visibility = 'hidden';
 
+  var revealed = false;
   function reveal() {
+    if (revealed) return;
+    revealed = true;
     document.documentElement.style.visibility = 'visible';
   }
 
-  // Fail Closed: إن تعذّر التحقق نهائياً، لا يُعرض محتوى الموقع الحقيقي إطلاقاً،
-  // بل تظهر رسالة محايدة مع زر إعادة محاولة، بدل إظهار المتجر افتراضياً كما في v3.
-  function showBlockedFallback() {
-    function render() {
-      document.body.innerHTML =
-        '<div style="min-height:100vh;background:#0f172a;color:#fff;display:flex;' +
-        'flex-direction:column;align-items:center;justify-content:center;text-align:center;' +
-        'padding:24px;font-family:Cairo,Arial,sans-serif;">' +
-          '<div style="font-size:56px;margin-bottom:16px;">⏳</div>' +
-          '<h2 style="margin-bottom:10px;">يتعذر التحقق من حالة الموقع الآن</h2>' +
-          '<p style="color:#94a3b8;max-width:340px;line-height:1.7;margin-bottom:20px;">' +
-          'تأكد من اتصالك بالإنترنت ثم أعد المحاولة.</p>' +
-          '<button onclick="location.reload()" style="background:#1a56db;color:#fff;border:none;' +
-          'padding:12px 28px;border-radius:50px;font-weight:700;font-size:15px;cursor:pointer;">' +
-          'إعادة المحاولة</button>' +
-        '</div>';
-      reveal();
-    }
-    if (document.body) render();
-    else document.addEventListener('DOMContentLoaded', render);
-  }
+  // شبكة أمان: إن تأخر الفحص (شبكة بطيئة) أكثر من MAX_WAIT_MS، يظهر الموقع تلقائياً
+  var safetyTimer = setTimeout(reveal, MAX_WAIT_MS);
 
-  function goSuspended(wa) {
-    var back = encodeURIComponent(location.href);
-    location.replace(SUSPENDED_PAGE + "?wa=" + encodeURIComponent(wa) + "&back=" + back);
-  }
+  fetch(CONFIG_URL + "?t=" + Date.now())
+    .then(function (r) { return r.json(); })
+    .then(function (data) {
+      clearTimeout(safetyTimer);
+      var key   = resolveStoreKey();
+      var store = data[key];
 
-  function fetchConfig(attempt) {
-    // تُقسَّم الأزمنة إلى حصص من 60 ثانية بدل كسر الكاش في كل تحميل صفحة.
-    // هذا يقلل عدد الطلبات الفعلية على GitHub Pages بشكل كبير عند وجود آلاف
-    // الزيارات، مع بقاء أي تحديث حالة (active/suspended) نافذاً خلال دقيقة كحد أقصى.
-    var cacheBucket = Math.floor(Date.now() / 60000);
-
-    fetch(CONFIG_URL + "?v=" + cacheBucket)
-      .then(function (r) {
-        if (!r.ok) throw new Error('bad-status');
-        return r.json();
-      })
-      .then(function (data) {
-        if (!data || typeof data !== 'object') throw new Error('bad-payload');
-
-        var host =
-  location.hostname === "abdelhamidnaim.github.io"
-    ? location.pathname.split("/")[1]
-    : location.hostname.replace(/^www\./, "");
-        var store = data[host];
-
-        if (store) {
-          if (store.status === 'suspended') {
-            goSuspended(store.whatsapp || data._default_whatsapp || DEFAULT_WHATSAPP);
-          } else {
-            reveal();
-          }
-        } else if (ALLOW_UNLISTED_DOMAINS) {
-          reveal();
-        } else {
-          goSuspended(data._default_whatsapp || DEFAULT_WHATSAPP);
-        }
-      })
-      .catch(function () {
-        if (attempt < MAX_ATTEMPTS) {
-          setTimeout(function () { fetchConfig(attempt + 1); }, RETRY_DELAY_MS);
-        } else {
-          // فشل التحقق نهائياً بعد كل المحاولات => Fail Closed
-          showBlockedFallback();
-        }
-      });
-  }
-
-  fetchConfig(1);
+      if (store && store.status === 'suspended') {
+        var wa = store.whatsapp || data._default_whatsapp || DEFAULT_WHATSAPP;
+        var back = encodeURIComponent(location.href);
+        location.replace(SUSPENDED_PAGE + "?wa=" + encodeURIComponent(wa) + "&back=" + back);
+        // لا نستدعي reveal() هنا، الصفحة سيتم مغادرتها فوراً
+      } else {
+        // active أو المفتاح غير موجود بالملف => إظهار الموقع طبيعياً
+        reveal();
+      }
+    })
+    .catch(function () {
+      clearTimeout(safetyTimer);
+      reveal(); // فشل تحميل الملف (مشكلة شبكة) → إظهار الموقع افتراضياً (fail-open)
+    });
 })();
