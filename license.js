@@ -8,7 +8,7 @@
   window.__spaceNaimLicenseVersion = LICENSE_VERSION; // للتحقق السريع من نسخة أي موقع عبر console
 
   // ⬇️ رابط GitHub Pages للمستودع المركزي (عدّله هنا فقط إن غيّرت المستودع)
-  var BASE_URL = "https://abdelhamidnaim.github.io/my-web-site-fix1";
+  var BASE_URL = "https://abdelhamidnaim.github.io/central";
 
   var CONFIG_URL       = BASE_URL + "/stores.json";
   var SUSPENDED_PAGE   = BASE_URL + "/suspended.html";
